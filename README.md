@@ -2,9 +2,9 @@
 
 [Paper in prep](https://www.overleaf.com/read/rdvxqytkfhww)
 
-## ZTF IC 10 variable catalog
-[ZTF $r$ band](t_zr_0307.ecsv)
-[ZTF $g$ band](t_zg_0307.ecsv)
+## ZTF IC 10 variable catalog (Main product)
+[ZTF r band catalog](t_zr_0307.ecsv)
+[ZTF g band catalog](t_zg_0307.ecsv)
 
 
 ## Non-variables, non-periodic variables, and periodic variables classified by this work
