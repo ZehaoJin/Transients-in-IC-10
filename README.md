@@ -2,7 +2,7 @@
 ### [1. ZTF IC 10 variable catalog (Main product)](#1-ztf-ic-10-variable-catalog-main-product-1)
 ### [2. Cite this work](#2-Cite-this-work-1)
 ### [3. Non-variables, non-periodic variables, and periodic variables identified by this work](#3-Non-variables-non-periodic-variables-and-periodic-variables-identified-by-this-work-1)
-### [4. Cross match with SIMBAD，X-ray and Gaia](#4-Cross-match-with-SIMBAD-X-ray-and-Gaia-1)
+### [4. Cross match with SIMBAD，X-ray and Gaia](#4-cross-match-with-simbadx-ray-and-gaia-1)
 ### [5. HR diagrams](#5-HR-diagrams-1)
 ### [6. Interesting lightcurves](#6-Interesting-lightcurves-1)
 
