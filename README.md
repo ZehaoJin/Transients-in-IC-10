@@ -1,5 +1,10 @@
 # Transients-in-IC-10
-### [1. ZTF IC 10 variable catalog (Main product)](1-ZTF-IC-10-variable-catalog-(Main-product))
+### [1. ZTF IC 10 variable catalog (Main product)](1-ztf-ic-10-variable-catalog-main-product-1)
+### [2. Cite this work](2-Cite-this-work)
+### [3. Non-variables, non-periodic variables, and periodic variables identified by this work](3-Non-variables-non-periodic-variables-and-periodic-variables-identified-by-this-work)
+### [4. Cross match with SIMBAD，X-ray and Gaia](4-Cross-match-with-SIMBAD-X-ray-and-Gaia)
+### [5. HR diagrams](5-HR-diagrams)
+### [6. Interesting lightcurves](6-Interesting-lightcurves)
 
 
 ## 1. ZTF IC 10 variable catalog (Main product)
@@ -23,25 +28,25 @@ If you use this repository or would like to refer the paper, please use the foll
 <img src="plots/HRdiagram_IC10.png" width="500"> <img src="plots/HRdiagram_noneIC10.png" width="500">
 
 ## 6. Interesting lightcurves
-### Flaring Super Giants
+### 6.1. Flaring Super Giants
 <img src="plots/lc_128.png" width="500"> <img src="plots/lc_1108.png" width="500">
 
-### 6.1. Luminous Blue Variable (LBV) with Long Secondary Period (LSP)
+### 6.2. Luminous Blue Variable (LBV) with Long Secondary Period (LSP)
 <img src="plots/sin_slope_193.png" width="500">
 
-### 6.2. Periodic Super Giants
+### 6.3. Periodic Super Giants
 <img src="plots/folded_lc_90.png" width="330"> <img src="plots/folded_lc_158.png" width="330"> <img src="plots/folded_lc_223.png" width="330">
 <img src="plots/folded_lc_225.png" width="330"> <img src="plots/folded_lc_354.png" width="330">
 
-### 6.3. Luminous Blue Variable (LBV) Candidate
+### 6.4. Luminous Blue Variable (LBV) Candidate
 <img src="plots/lc_color_90.png" width="500"> <img src="plots/g_g-r_90.png" width="500">
 
-### 6.4. Mira Candidates
+### 6.5. Mira Candidates
 <img src="plots/super_red_242.png" width="330"> <img src="plots/super_red_577.png" width="330"> <img src="plots/super_red_1259.png" width="330">
 
-### 6.5. Possible Periodic Subdwarf
+### 6.6. Possible Periodic Subdwarf
 <img src="plots/lc_145.png" width="500"> <img src="plots/sin_145.png" width="500">
 
 
-### 6.6. Low Mass X-ray Binary in the Milky Way
+### 6.7. Low Mass X-ray Binary in the Milky Way
 <img src="plots/lc_2008.png" width="500"> <img src="plots/sin_2008.png" width="500">
