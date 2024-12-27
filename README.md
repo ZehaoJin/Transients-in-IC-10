@@ -10,6 +10,7 @@
 ## 1. ZTF IC 10 variable catalog (Main product)
 - ZTF r band catalog: [csv](df_zr.csv) / [ecsv (astropy Qtable)](t_zr_20240401.ecsv)
 - ZTF g band catalog: [csv](df_zg.csv)  / [ecsv (astropy Qtable)](t_zg_20240401.ecsv)
+- color catalog: [csv](df_color) / [ecsv (astropy Qtable)](t_color_0912.ecsv)
 
 ## 2. Cite this work
 If you use this repository or would like to refer the paper, please use the following BibTeX entry:
