@@ -5,6 +5,7 @@
 ### [4. Cross match with SIMBAD，X-ray and Gaia](#4-cross-match-with-simbadx-ray-and-gaia-1)
 ### [5. HR diagrams](#5-HR-diagrams-1)
 ### [6. Interesting lightcurves](#6-Interesting-lightcurves-1)
+### [7.All periodic lightcurves](https://github.com/ZehaoJin/Transients-in-IC-10/blob/main/All_periodic_lightcurves.ipynb)
 
 
 ## 1. ZTF IC 10 variable catalog (Main product)
