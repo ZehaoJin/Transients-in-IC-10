@@ -10,6 +10,7 @@ import matplotlib.lines as mlines
 from scipy.stats import chisquare
 from scipy.stats import chi2
 from scipy.stats import lognorm
+from scipy.stats import pearsonr
 from astropy.timeseries import LombScargle
 import time
 from astropy.visualization import hist
@@ -25,8 +26,11 @@ from scipy.optimize import minimize
 from tqdm import tqdm
 
 
-t_zr=QTable.read('t_zr_20240401.ecsv')
-t_zg=QTable.read('t_zg_20240401.ecsv')
+# t_zr=QTable.read('t_zr_20240401.ecsv')
+# t_zg=QTable.read('t_zg_20240401.ecsv')
+
+t_zr=QTable.read('t_zr_20250225.ecsv')
+t_zg=QTable.read('t_zg_20250225.ecsv')
 
 
 def draw_lightcurve(SourceID):
@@ -953,7 +957,97 @@ def sinfit_fix_period_absolute(SourceID,force_period=None,max_light=False, print
         return None
     
 
+def sinfit_fix_period_OID(OID,force_period=None, print_param=False):
+    plt.figure(figsize=(12,6))
+    fs=20
+    
+    OID=str(int(OID))
+    entry = t_zr[t_zr['OID']==OID]
+    if len(entry)==0:
+        entry = t_zg[t_zg['OID']==OID]
+    
+    SourceID = entry['SourceID'][0]
+    band = entry['filter'][0]
 
+    if force_period == None:
+        period = entry['period'][0]
+    else:
+        period = force_period
+
+    # print('SourceID:',SourceID)
+    # print('band:',band)
+    
+    try:
+        t_ztf=QTable.read('https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves?ID='+OID)
+    except:
+        try:
+            time.sleep(1)
+            t_ztf=QTable.read('https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves?ID='+OID)
+        except:
+            time.sleep(1)
+            t_ztf=QTable.read('https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves?ID='+OID)
+        
+            
+
+    if band=='zr':
+        #remove the bad one day
+        t_ztf=t_ztf[t_ztf['catflags']==0]
+        
+        t_ztf=t_ztf[(t_ztf['mjd']<58481*u.day)|(t_ztf['mjd']>58482*u.day)]
+        t_ztf=t_ztf[(t_ztf['mjd']<58472*u.day)|(t_ztf['mjd']>58474*u.day)]
+        t_ztf=t_ztf[(t_ztf['mjd']<59032*u.day)|(t_ztf['mjd']>59033*u.day)]
+
+    # up to DR15, Nov 2022, MJD 59892
+    t_ztf=t_ztf[t_ztf['mjd']<59892*u.day]
+
+
+    ts=TimeSeries(time=Time(t_ztf['mjd'],format='mjd'),data={'mag': t_ztf['mag'],'magerr':t_ztf['magerr']})
+
+    ts_folded=ts.fold(period=period*u.day)
+
+    freq = 1./period
+    amp = np.std(ts_folded['mag'].value) * 2.**0.5
+    offset = np.mean(ts_folded['mag'].value)
+    guess = np.array([amp, 0., offset])
+    #convert guess period to w
+    w = 2.*np.pi / period
+
+    def sinfunc(t, A, p, c):
+        return A * np.sin(w*t + p) + c
+
+    popt, pcov =curve_fit(sinfunc,ts_folded.time.jd,ts_folded['mag'],p0=guess)
+    A, p, c = popt
+    perr = np.sqrt(np.diag(pcov))
+    tt=np.linspace(ts_folded.time.jd.min(),ts_folded.time.jd.max(),100)
+    yy=A*np.sin(w*tt+p)+c
+    y=A*np.sin(w*ts_folded.time.jd+p)+c
+
+    sin_chi2=(((ts_folded['mag'].value-y)**2)/(ts_folded['magerr'].value**2)).sum()/(len(ts_folded)-1)
+    print('sin_chi2:',sin_chi2)
+
+
+    plt.scatter(ts_folded.time.jd, ts_folded['mag'],c=t_ztf['mjd'].value,s=20,label='Source '+str(SourceID)+r', $'+band[-1]+'$ band, OID = '+OID)
+    plt.plot(tt, yy, c='r', label='sinusoidal fit, period = {:.1f} days'.format(period))
+    plt.legend(fontsize=fs*0.8)
+    #colorbar tick size
+    plt.colorbar().ax.tick_params(labelsize=fs*0.8)
+    plt.xlabel('Time (days)',fontsize=fs*1.2)
+    #plt.ylabel(r'$m_r$',fontsize=fs*1.3)
+    plt.ylabel(r'$m_'+band[-1]+'$',fontsize=fs*1.3)
+    #ticksize
+    plt.xticks(fontsize=fs*0.8)
+    plt.yticks(fontsize=fs*0.8)
+    plt.gca().invert_yaxis()
+
+    if print_param==True:
+        print('Period',period)
+        print('A:',A,'±',perr[0])
+        print('w:',w)
+        print('p:',p,'±',perr[1])
+        print('c:',c,'±',perr[2])
+        print('t0:',t_ztf['mjd'][0])
+        print('')
+    
 
 
 def sinfit2(SourceID,force_period=None):
@@ -1287,7 +1381,7 @@ def color2(SourceID,band='r',ployfit=False,c0=18.5):
     return None
 
 
-def color3(SourceID):
+def color3(SourceID,corr=False):
     plt.figure(figsize=(20,15))
 
     t_zr_cand=t_zr[t_zr['SourceID']==SourceID]
@@ -1340,6 +1434,9 @@ def color3(SourceID):
     arr=arr[:,np.isnan(arr[1,:])==False]
 
     plt.errorbar(arr[1],arr[2],xerr=arr[3],yerr=arr[4],fmt='o',ecolor='grey',capsize=2,label='Source ID = '+str(SourceID))
+    
+    if corr==True:
+        print(pearsonr(arr[1],arr[2]))
 
     # fit with g=r+c
     popt, pcov =curve_fit(lambda x, c: x+c,arr[1],arr[2])
@@ -1354,6 +1451,61 @@ def color3(SourceID):
     plt.gca().invert_xaxis()
     
     return None
+
+
+def zrzg_corr(SourceID):
+    t_zr_cand=t_zr[t_zr['SourceID']==SourceID]
+    t_zg_cand=t_zg[t_zg['SourceID']==SourceID]
+    OID_zr=t_zr_cand[t_zr_cand['numobs'].argmax()]['OID']
+    OID_zg=t_zg_cand[t_zg_cand['numobs'].argmax()]['OID']
+    OID_zr=str(int(OID_zr))
+    OID_zg=str(int(OID_zg))
+
+    #print(OID_zr,OID_zg)
+
+    tt_zr=QTable.read('https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves?ID='+OID_zr)
+    tt_zg=QTable.read('https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves?ID='+OID_zg)
+
+    # clean data flag
+    tt_zr=tt_zr[tt_zr['catflags']==0]
+    tt_zg=tt_zg[tt_zg['catflags']==0]
+    
+    #remove the bad one day
+    tt_zr=tt_zr[(tt_zr['mjd']<58481*u.day)|(tt_zr['mjd']>58482*u.day)]
+    tt_zr=tt_zr[(tt_zr['mjd']<58472*u.day)|(tt_zr['mjd']>58474*u.day)]
+    tt_zr=tt_zr[(tt_zr['mjd']<59032*u.day)|(tt_zr['mjd']>59033*u.day)]
+
+    # up to DR15, Nov 2022, MJD 59892
+    tt_zr=tt_zr[tt_zr['mjd']<59892*u.day]
+    tt_zg=tt_zg[tt_zg['mjd']<59892*u.day]
+
+    start=np.floor(min([tt_zr['mjd'].value.min(),tt_zg['mjd'].value.min()]))
+    end=np.ceil(max([tt_zr['mjd'].value.max(),tt_zg['mjd'].value.max()]))
+
+    days=np.arange(start,end)
+    arr=np.zeros((5,len(days)))
+    arr[0,:]=days
+    ## arr[days,zr,zg]
+
+    for i,day in enumerate(days):
+        zr_cand=tt_zr[np.floor(tt_zr['mjd'].value)==day]
+        zg_cand=tt_zg[np.floor(tt_zg['mjd'].value)==day]
+        if len(zr_cand)==1 and len(zg_cand)==1:
+            arr[1,i]=zr_cand['mag'].value
+            arr[2,i]=zg_cand['mag'].value
+            arr[3,i]=zr_cand['magerr'].value
+            arr[4,i]=zg_cand['magerr'].value
+        else:
+            arr[1,i]=np.nan
+            arr[2,i]=np.nan
+            arr[3,i]=np.nan
+            arr[4,i]=np.nan
+
+    arr=arr[:,np.isnan(arr[1,:])==False]
+
+    corr=pearsonr(arr[1],arr[2])
+    
+    return corr
 
 #'''
 def MGPRfit3(SourceID,force_period=None,errscale=1):
