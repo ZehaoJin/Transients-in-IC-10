@@ -9,6 +9,7 @@
 
 
 ## 1. ZTF IC 10 variable catalog (Main product)
+- official data archived on Zenodo: [https://zenodo.org/records/14979711](https://zenodo.org/records/14979711)
 - ZTF r band catalog: [csv](df_zr.csv) / [ecsv (astropy Qtable)](t_zr_20240401.ecsv)
 - ZTF g band catalog: [csv](df_zg.csv)  / [ecsv (astropy Qtable)](t_zg_20240401.ecsv)
 - color catalog: [csv](df_color.csv) / [ecsv (astropy Qtable)](t_color_0912.ecsv)
