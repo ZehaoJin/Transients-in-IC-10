@@ -16,7 +16,19 @@
 ## 2. Cite this work
 If you use this repository or would like to refer the paper, please use the following BibTeX entry:
 
-    @article{
+    @article{Jin_2025,
+    doi = {10.3847/1538-4365/adc7fe},
+    url = {https://dx.doi.org/10.3847/1538-4365/adc7fe},
+    year = {2025},
+    month = {may},
+    publisher = {The American Astronomical Society},
+    volume = {278},
+    number = {1},
+    pages = {31},
+    author = {Jin, Zehao and Gelfand, Joseph D.},
+    title = {ZTF IC 10 Variable Catalog},
+    journal = {The Astrophysical Journal Supplement Series},
+    abstract = {To study how massive variable stars affect their environment, we search for variability among Zwicky Transient Facility (ZTF) sources located within the optical extent of the nearby starburst galaxy IC 10. We present the ZTF IC 10 catalog, which classifies 1516 r-band sources and 864 g-band sources within a 225″ radius around IC 10 into three categories: 1388 (767) r- (g)-band nonvariables, 150 (85) r- (g)-band nonperiodic variables, and 37 (12) r- (g)-band periodic variables. Among them 101 (48) r- (g)-band nonperiodic variables and 22 (4) r- (g)-band periodic variables are inside IC 10. We verify our classification by crossmatching with previous variability catalogs and machine learning–powered classifications. Various analysis including population demographics, color–magnitude diagrams, and crossmatching with a set of different surveys and database such as Gaia, XMM-Newton, Chandra, and SIMBAD are also presented. Based on source density and parallax, we distinguish sources within IC 10 from non–IC 10 sources. For IC 10 sources, we highlight flaring supergiants, a source with a long secondary period, and periodic supergiants including a possible S Doradus luminous blue variable and candidate Miras. For non–IC 10 sources, we present superred sources and compact objects such as a possible long-period subdwarf and a periodic X-ray source. The catalog can serve as a useful database to study the connections between various types of massive stars and their host galaxies.}
     }
 
 
